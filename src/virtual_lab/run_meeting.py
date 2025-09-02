@@ -1,5 +1,6 @@
 """Runs a meeting with LLM agents."""
 
+import os
 import time
 from pathlib import Path
 from typing import Literal
@@ -30,6 +31,27 @@ from virtual_lab.utils import (
     run_tools,
     save_meeting,
 )
+
+# 智谱AI支持
+try:
+    from virtual_lab.zhipu_client import ZhipuAIWrapper
+    ZHIPUAI_AVAILABLE = True
+except ImportError:
+    ZHIPUAI_AVAILABLE = False
+
+
+def _get_client():
+    """获取合适的AI客户端"""
+    # 检查是否设置了智谱AI密钥
+    if os.getenv("ZHIPUAI_API_KEY") and ZHIPUAI_AVAILABLE:
+        print("使用智谱AI客户端")
+        return ZhipuAIWrapper()
+    # 否则使用OpenAI
+    elif os.getenv("OPENAI_API_KEY"):
+        print("使用OpenAI客户端")
+        return OpenAI()
+    else:
+        raise ValueError("请设置ZHIPUAI_API_KEY或OPENAI_API_KEY环境变量")
 
 
 def run_meeting(
@@ -92,7 +114,7 @@ def run_meeting(
     start_time = time.time()
 
     # Set up client
-    client = OpenAI()
+    client = _get_client()
 
     # Set up team
     if meeting_type == "team":

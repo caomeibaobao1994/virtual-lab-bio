@@ -1,9 +1,10 @@
 """Holds constants."""
 
-DEFAULT_MODEL = "gpt-4o-2024-08-06"
+# 支持OpenAI和智谱AI模型
+DEFAULT_MODEL = "glm-4-plus"  # 智谱AI默认模型
 
-# Prices in USD as of January 18, 2025 (https://openai.com/api/pricing/)
-MODEL_TO_INPUT_PRICE_PER_TOKEN = {
+# OpenAI模型价格 (USD per token，2025年1月18日)
+OPENAI_MODEL_TO_INPUT_PRICE_PER_TOKEN = {
     "gpt-3.5-turbo-0125": 0.5 / 10**6,
     "gpt-4o-2024-08-06": 2.5 / 10**6,
     "gpt-4o-2024-05-13": 5 / 10**6,
@@ -11,12 +12,42 @@ MODEL_TO_INPUT_PRICE_PER_TOKEN = {
     "o1-mini-2024-09-12": 3 / 10**6,
 }
 
-MODEL_TO_OUTPUT_PRICE_PER_TOKEN = {
+OPENAI_MODEL_TO_OUTPUT_PRICE_PER_TOKEN = {
     "gpt-3.5-turbo-0125": 1.5 / 10**6,
     "gpt-4o-2024-08-06": 10 / 10**6,
     "gpt-4o-2024-05-13": 15 / 10**6,
     "gpt-4o-mini-2024-07-18": 0.6 / 10**6,
     "o1-mini-2024-09-12": 12 / 10**6,
+}
+
+# 智谱AI模型价格 (CNY per token，按照官方定价)
+ZHIPUAI_MODEL_TO_INPUT_PRICE_PER_TOKEN = {
+    "glm-4-plus": 0.1 / 1000,  # 100元/百万tokens
+    "glm-4-0520": 0.1 / 1000,
+    "glm-4": 0.1 / 1000,
+    "glm-4-air": 0.001 / 1000,  # 1元/百万tokens
+    "glm-4-airx": 0.01 / 1000,  # 10元/百万tokens
+    "glm-4-flash": 0.001 / 1000,  # 1元/百万tokens
+}
+
+ZHIPUAI_MODEL_TO_OUTPUT_PRICE_PER_TOKEN = {
+    "glm-4-plus": 0.1 / 1000,
+    "glm-4-0520": 0.1 / 1000,
+    "glm-4": 0.1 / 1000,
+    "glm-4-air": 0.001 / 1000,
+    "glm-4-airx": 0.01 / 1000,
+    "glm-4-flash": 0.001 / 1000,
+}
+
+# 合并价格配置，优先支持智谱AI
+MODEL_TO_INPUT_PRICE_PER_TOKEN = {
+    **ZHIPUAI_MODEL_TO_INPUT_PRICE_PER_TOKEN,
+    **OPENAI_MODEL_TO_INPUT_PRICE_PER_TOKEN,
+}
+
+MODEL_TO_OUTPUT_PRICE_PER_TOKEN = {
+    **ZHIPUAI_MODEL_TO_OUTPUT_PRICE_PER_TOKEN,
+    **OPENAI_MODEL_TO_OUTPUT_PRICE_PER_TOKEN,
 }
 
 FINETUNING_MODEL_TO_INPUT_PRICE_PER_TOKEN = {

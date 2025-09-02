@@ -49,6 +49,20 @@ pip install -e .
 ```
 
 
-## OpenAI API Key
+## API Key配置
 
-The Virtual Lab currently uses GPT-4o from OpenAI. Save your OpenAI API key as the environment variable `OPENAI_API_KEY`. For example, add `export OPENAI_API_KEY=<your_key>` to your `.bashrc` or `.bash_profile`.
+Virtual Lab现在支持两种AI服务：
+
+### 智谱AI（推荐）
+设置智谱AI的API密钥作为环境变量：
+```bash
+export ZHIPUAI_API_KEY=<your_zhipuai_key>
+```
+
+### OpenAI（备选）
+如果没有设置智谱AI密钥，系统会使用OpenAI：
+```bash
+export OPENAI_API_KEY=<your_openai_key>
+```
+
+**注意**: 如果同时设置了两个密钥，系统优先使用智谱AI。
